@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Marvel Fan</string>
+    <string name="retry">Retry</string>
+    <string name="marvel_characters">Marvel\'s Characters</string>
+    <string name="hi">Hi</string>
 </resources>
