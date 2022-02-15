@@ -1,25 +1,18 @@
 package com.toters.marvelfan.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class CharacterModel (
-    val id: String,
+    val id: Int,
     val name: String,
     val description: String,
-    val modified: String,
-    val resourceURI: String,
-    val urls: List<URL>,
     val thumbnail: Thumbnail,
-    val comics: Comics,
-    val stories: Stories,
-    val events: Comics,
-    val series: Comics
-)
+): Parcelable
 
+@Parcelize
 data class Thumbnail (
     val path: String,
     val extension: String
-)
-
-data class URL (
-    val type: String,
-    val url: String
-)
+): Parcelable

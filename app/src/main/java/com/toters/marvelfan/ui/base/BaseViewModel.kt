@@ -2,47 +2,60 @@ package com.toters.marvelfan.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.metinozcura.rickandmorty.util.SingleLiveEvent
+import com.toters.marvelfan.data.model.ApiException
+import com.toters.marvelfan.data.network.DataResourceState
+import com.toters.marvelfan.utils.NetworkConnectionInterceptor
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 abstract class BaseViewModel : ViewModel() {
-    var progressLiveEvent = SingleLiveEvent<Boolean>()
-    var errorMessage = SingleLiveEvent<String>()
 
-    inline fun <T> launchAsync(
-        crossinline execute: suspend () -> Response<T>,
-        crossinline onSuccess: (T) -> Unit,
-        showProgress: Boolean = true
-    ) {
-        viewModelScope.launch {
-            if (showProgress)
-                progressLiveEvent.value = true
-            try {
-                val result = execute()
-                if (result.isSuccessful)
-                    onSuccess(result.body()!!)
-                else
-                    errorMessage.value = result.message()
-            } catch (ex: Exception) {
-                errorMessage.value = ex.message
-            } finally {
-                progressLiveEvent.value = false
-            }
+    inline fun <T> launchFetchItemAsync(
+        crossinline execute: suspend () -> T,
+    ): Flow<DataResourceState<T>> = flow {
+        try {
+            emit(DataResourceState.loading())
+            val events = execute()
+            emit(DataResourceState.success(events))
+        } catch (e: ApiException) {
+            emit(DataResourceState.failure(e.error.message))
+        } catch (e: NetworkConnectionInterceptor.NoConnectionException) {
+            emit(DataResourceState.failure(e.message))
+        } catch (e: Exception) {
+            emit(DataResourceState.failure("Something_went_wrong"))
+        }
+    }
+
+    inline fun <T> launchFetchListAsync(
+        crossinline execute: suspend () -> List<T>,
+    ): Flow<DataResourceState<List<T>>> = flow {
+        try {
+            emit(DataResourceState.loading())
+            val events = execute()
+            if(events.isEmpty()) emit(DataResourceState.noResults())
+            else emit(DataResourceState.success(events))
+        } catch (e: ApiException) {
+            emit(DataResourceState.failure(e.error.message))
+        } catch (e: NetworkConnectionInterceptor.NoConnectionException) {
+            emit(DataResourceState.failure(e.message))
+        } catch (e: Exception) {
+            emit(DataResourceState.failure("Something_went_wrong"))
         }
     }
 
     inline fun <T> launchPagingAsync(
         crossinline execute: suspend () -> Flow<T>,
-        crossinline onSuccess: (Flow<T>) -> Unit
-    ) {
+        crossinline onSuccess: (Flow<T>) -> Unit,
+        crossinline onError: (String) -> Unit,
+        ) {
         viewModelScope.launch {
             try {
                 val result = execute()
                 onSuccess(result)
             } catch (ex: Exception) {
-                errorMessage.value = ex.message
+                onError(ex.message?:"Something went wrong")
             }
         }
     }

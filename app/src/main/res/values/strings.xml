@@ -3,4 +3,14 @@
     <string name="retry">Retry</string>
     <string name="marvel_characters">Marvel\'s Characters</string>
     <string name="hi">Hi</string>
+    <string name="description">Description:</string>
+    <string name="dummy_description">The panel below displays documentation all endpoints, parameters and error messages available to the Marvel API. For a more detailed explanation of API structure, please read the full documentation.  If you have an API key, you can also test API calls directly from this panel. Just log-in to your Marvel account and your key will be pre-filled. (If you don\'t have a key, get one now.)</string>
+    <string name="comics">Comics</string>
+    <string name="events">Events</string>
+    <string name="series">Series</string>
+    <string name="stories">Stories</string>
+    <string name="no_comics_message">Sorry no comics found</string>
+    <string name="no_events_message">Sorry no events found</string>
+    <string name="no_series_message">Sorry no series found</string>
+    <string name="no_stories_message">Sorry no stories found</string>
 </resources>

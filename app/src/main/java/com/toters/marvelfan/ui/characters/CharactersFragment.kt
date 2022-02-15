@@ -1,5 +1,7 @@
 package com.toters.marvelfan.ui.characters
 
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import org.koin.android.viewmodel.ext.android.viewModel
 import androidx.paging.LoadState
 import com.toters.marvelfan.ui.base.BaseFragment
@@ -12,7 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 class CharactersFragment : BaseFragment<FragmentCharactersBinding, CharactersViewModel>(),
     CharactersAdapter.CharacterClickListener {
-    private val charactersViewModel: CharactersViewModel by viewModel()
+    private val viewModel: CharactersViewModel by viewModel()
 
     private val characterAdapter by lazy {
         CharactersAdapter()
@@ -25,11 +27,9 @@ class CharactersFragment : BaseFragment<FragmentCharactersBinding, CharactersVie
         )
     }
 
-    override val layoutId: Int = R.layout.fragment_characters
+    override fun layoutId(): Int = R.layout.fragment_characters
 
-    override fun getVM(): CharactersViewModel = charactersViewModel
-
-    override fun bindVM(binding: FragmentCharactersBinding, vm: CharactersViewModel) =
+    override fun initFragment() {
         with(binding) {
             with(characterAdapter) {
                 rvCharacters.apply {
@@ -49,7 +49,7 @@ class CharactersFragment : BaseFragment<FragmentCharactersBinding, CharactersVie
 
                 characterClickListener = this@CharactersFragment
 
-                with(vm) {
+                with(viewModel) {
                     launchOnLifecycleScope {
                         charactersFlow.collectLatest { submitData(it) }
                     }
@@ -61,6 +61,16 @@ class CharactersFragment : BaseFragment<FragmentCharactersBinding, CharactersVie
                 }
             }
         }
+    }
 
-    override fun onCharacterClicked(binding: CharacterListItemBinding, character: CharacterModel) {}
+    override fun onCharacterClicked(binding: CharacterListItemBinding, character: CharacterModel) {
+        val extras = FragmentNavigatorExtras(
+            binding.characterImageView to "image_${character.id}",
+            binding.nameCard to "name_${character.id}",
+        )
+        findNavController().navigate(
+            CharactersFragmentDirections.actionCharactersToCharacterDetail(character),
+            extras
+        )
+    }
 }

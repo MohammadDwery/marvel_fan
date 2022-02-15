@@ -1,6 +1,9 @@
 package com.toters.marvelfan.data.network.api
 
 import android.content.Context
+import android.util.Log
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.toters.marvelfan.BuildConfig
 import com.toters.marvelfan.BuildConfig.PRIVATE_API_KEY
 import com.toters.marvelfan.BuildConfig.PUBLIC_API_KEY
@@ -13,6 +16,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import okhttp3.ResponseBody
+import retrofit2.Converter
+
 
 class APIServiceProvider {
     fun provide(context: Context, baseUrl: String): Retrofit {
@@ -82,7 +88,9 @@ class APIServiceProvider {
                 ApiException(ErrorResponse(code.toString(), "Server response is empty"))
             } else {
                 try {
-                    ApiException(ErrorResponse(code.toString(), response.message))
+                    val gson = Gson()
+                    val errorResponse: ErrorResponse = gson.fromJson(response.body!!.charStream(), ErrorResponse::class.java)
+                    ApiException(errorResponse)
                 } catch (ex: Exception) {
                     ApiException(ErrorResponse(code.toString(), "Cannot parse error: ${ex.message}"))
                 } finally {

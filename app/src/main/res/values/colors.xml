@@ -7,4 +7,7 @@
     <color name="secondaryVariant">#175A9F</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="title_color">#FFFFFFFF</color>
+    <color name="description_color">#99FFFFFF</color>
 </resources>

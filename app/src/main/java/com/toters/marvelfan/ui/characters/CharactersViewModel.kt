@@ -22,5 +22,6 @@ class CharactersViewModel(
     private fun getAllCharacters() = launchPagingAsync(
         execute = { charactersRepository.getCharacters().cachedIn(viewModelScope) },
         onSuccess = { _charactersFlow = it },
+        onError = { }
     )
 }

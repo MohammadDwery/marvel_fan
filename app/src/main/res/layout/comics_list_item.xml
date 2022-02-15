@@ -5,15 +5,14 @@
 
     <data>
         <variable
-            name="character"
-            type="com.toters.marvelfan.data.model.CharacterModel" />
+            name="model"
+            type="com.toters.marvelfan.data.model.BaseModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <com.google.android.material.imageview.ShapeableImageView
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -24,9 +23,9 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center"
             app:shapeAppearanceOverlay="@style/roundedCornersImageView"
-            imageUrl="@{character.thumbnail}"
-            android:id="@+id/character_imageView"
-            android:layout_height="300dp"
+            imageUrl="@{model.thumbnail}"
+            android:id="@+id/imageView"
+            android:layout_height="150dp"
             app:layout_constraintVertical_bias="0"/>
         <androidx.cardview.widget.CardView
             android:id="@+id/name_card"
@@ -39,10 +38,8 @@
             android:foreground="?selectableItemBackground"
             android:minHeight="@dimen/dp_40"
             app:cardCornerRadius="@dimen/dp_24"
-            app:layout_constraintBottom_toBottomOf="@+id/character_imageView"
-            app:layout_constraintTop_toBottomOf="@+id/character_imageView"
-            >
-
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/imageView">
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/character_name_textView"
                 android:layout_width="wrap_content"
@@ -51,11 +48,10 @@
                 android:paddingHorizontal="@dimen/dp_8"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{character.name}"
+                android:text="@{model.title}"
                 tools:text="Spider-Man"
                 android:textColor="@color/primaryLight"
                 android:textSize="@dimen/font_14" />
         </androidx.cardview.widget.CardView>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

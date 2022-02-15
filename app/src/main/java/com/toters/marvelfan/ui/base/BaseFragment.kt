@@ -11,43 +11,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 
 abstract class BaseFragment<DB : ViewDataBinding, VM : BaseViewModel> : Fragment() {
-    private lateinit var viewModel: VM
-    private lateinit var binding: DB
+    lateinit var binding: DB
 
-    @get:LayoutRes
-    abstract val layoutId: Int
+    @LayoutRes
+    abstract fun layoutId(): Int
 
-    abstract fun getVM(): VM
-
-    abstract fun bindVM(binding: DB, vm: VM)
+    abstract fun initFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
+        binding = DataBindingUtil.inflate(inflater, layoutId(), container, false)
         return binding.root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = getVM()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindVM(binding, viewModel)
-        with(viewModel) {
-//            observe(progressLiveEvent) { show ->
-//                if (show) (activity as BaseActivity<*, *>).showProgress()
-//                else (activity as BaseActivity<*, *>).hideProgress()
-//            }
-//
-//            observe(errorMessage) { msg ->
-//                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-//            }
-        }
+        initFragment()
     }
 
     fun launchOnLifecycleScope(execute: suspend () -> Unit) {

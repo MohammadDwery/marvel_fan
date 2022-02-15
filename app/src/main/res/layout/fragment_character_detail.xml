@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="character"
+            type="com.toters.marvelfan.data.model.CharacterModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/details_layout">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="@dimen/dp_24"
+                android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/back_btn"
+                    android:layout_width="@dimen/dp_32"
+                    android:layout_height="@dimen/dp_32"
+                    android:layout_gravity="start"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/dp_8"
+                    android:layout_marginHorizontal="@dimen/dp_16"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_back"
+                    />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginHorizontal="@dimen/dp_40"
+                    android:layout_marginTop="@dimen/dp_48"
+                    android:layout_marginBottom="@dimen/dp_24">
+                    <include
+                        android:id="@+id/character_card"
+                        layout="@layout/character_list_item" />
+                    <include
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        android:layout_gravity="center"
+                        android:id="@+id/characterNetworkStateLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        layout="@layout/item_network_state" />
+                </FrameLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description_title_tv"
+                    android:layout_marginHorizontal="@dimen/dp_24"
+                    android:layout_marginBottom="@dimen/dp_8"
+                    android:text="@string/description"
+                    android:textColor="@color/title_color"
+                    android:textSize="@dimen/font_20" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/description_tv"
+                    android:layout_marginHorizontal="@dimen/dp_24"
+                    tools:text="@string/dummy_description"
+                    android:text="@{character.description}"
+                    android:textColor="@color/description_color"
+                    android:textSize="@dimen/font_18" />
+                <include layout="@layout/horizontal_titled_list_layout"
+                    android:id="@+id/comicsComponent"
+                    app:title="Comics"/>
+                <include layout="@layout/horizontal_titled_list_layout"
+                    app:title="Event"
+                    android:id="@+id/eventsComponent"/>
+                <include layout="@layout/horizontal_titled_list_layout"
+                    app:title="Series"
+                    android:id="@+id/seriesComponent"/>
+                <include layout="@layout/horizontal_titled_list_layout"
+                    app:title="Stories"
+                    android:id="@+id/storiesComponent"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

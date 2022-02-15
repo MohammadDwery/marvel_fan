@@ -1,54 +1,28 @@
 package com.toters.marvelfan.data.network
 
-data class DataResourceState<T>(val status: Status?, val data : T?, val message: String?) {
+data class DataResourceState<T>(val status: DataResourceStatus?, val data : T?=null, val message: String?=null) {
 
     companion object{
-        fun <T> success(data: T?): DataResourceState<T> {
-            return DataResourceState(
-                Status.SUCCESS,
-                data,
-                null
+        fun <T> success(data: T?): DataResourceState<T> = DataResourceState(
+                status = DataResourceStatus.SUCCESS,
+                data = data,
             )
-        }
-        fun <T> noMoreResults(): DataResourceState<T> {
-            return DataResourceState(
-                Status.NO_MORE_RESULTS,
-                null,
-                null
-            )
-        }
-        fun <T> noResults(): DataResourceState<T> {
-            return DataResourceState(
-                Status.NO_RESULTS,
-                null,
-                null
-            )
-        }
-        fun <T> noInternet(): DataResourceState<T> {
-            return DataResourceState(
-                Status.NO_INTERNET,
-                null,
-                null
-            )
-        }
-        fun <T> loading(): DataResourceState<T>? {
-            return DataResourceState(
-                Status.LOADING,
-                null,
-                null
-            )
-        }
 
-        fun <T> failure(): DataResourceState<T> {
-            return DataResourceState(
-                Status.FAILURE,
-                null,
-                null
-            )
-        }
-    }
+        fun <T> noMoreResults(): DataResourceState<T> =
+            DataResourceState(status = DataResourceStatus.NO_MORE_RESULTS,)
 
-    enum class Status {
-        SUCCESS, FAILURE, NO_MORE_RESULTS, NO_RESULTS, NO_INTERNET, LOADING
+        fun <T> noResults(): DataResourceState<T> =
+            DataResourceState(status = DataResourceStatus.NO_RESULTS)
+
+        fun <T> loading(): DataResourceState<T> =
+            DataResourceState(status = DataResourceStatus.LOADING)
+
+        fun <T> failure(message: String?): DataResourceState<T> = DataResourceState(
+                status = DataResourceStatus.FAILURE,
+                message = message,
+            )
     }
+}
+enum class DataResourceStatus {
+    SUCCESS, FAILURE, NO_MORE_RESULTS, NO_RESULTS, LOADING
 }

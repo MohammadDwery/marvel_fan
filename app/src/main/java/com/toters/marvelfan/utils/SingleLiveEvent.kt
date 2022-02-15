@@ -1,4 +1,4 @@
-package com.metinozcura.rickandmorty.util
+package com.toters.marvelfan.utils
 
 import androidx.annotation.MainThread
 import androidx.annotation.Nullable

@@ -37,8 +37,8 @@ class CharactersAdapter:
         }
 
         fun bind(item: CharacterModel) = with(binding) {
-            ViewCompat.setTransitionName(binding.characterImageView, "avatar_${item.id}")
-            ViewCompat.setTransitionName(binding.characterImageView, "name_${item.id}")
+            ViewCompat.setTransitionName(binding.characterImageView, "image_${item.id}")
+            ViewCompat.setTransitionName(binding.nameCard, "name_${item.id}")
             character = item
         }
     }
@@ -50,6 +50,7 @@ class CharactersAdapter:
         override fun areContentsTheSame(oldItem: CharacterModel, newItem: CharacterModel) =
             oldItem == newItem
     }
+
 
     interface CharacterClickListener {
         fun onCharacterClicked(binding: CharacterListItemBinding, character: CharacterModel)
