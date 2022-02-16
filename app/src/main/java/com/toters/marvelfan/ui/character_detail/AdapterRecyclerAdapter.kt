@@ -3,12 +3,11 @@ package com.toters.marvelfan.ui.character_detail
 import androidx.recyclerview.widget.DiffUtil
 import com.toters.marvelfan.R
 import com.toters.marvelfan.data.model.BaseModel
-import com.toters.marvelfan.data.model.ComicsModel
-import com.toters.marvelfan.databinding.ComicsListItemBinding
+import com.toters.marvelfan.databinding.CharactersDetailsListItemBinding
 import com.toters.marvelfan.ui.base.BaseRecyclerAdapter
 
-class ComicsRecyclerAdapter(screenWidth: Int) :
-    BaseRecyclerAdapter<BaseModel, ComicsListItemBinding>(screenWidth) {
+class AdapterRecyclerAdapter(screenWidth: Int) :
+    BaseRecyclerAdapter<BaseModel, CharactersDetailsListItemBinding>(screenWidth) {
 
     override fun DIFF_CALLBACK() = object : DiffUtil.ItemCallback<BaseModel>() {
         override fun areItemsTheSame(oldItem: BaseModel, newItem: BaseModel): Boolean {
@@ -20,7 +19,7 @@ class ComicsRecyclerAdapter(screenWidth: Int) :
         }
     }
 
-    override fun onBindViewHolder(holder: Companion.BaseViewHolder<ComicsListItemBinding>, position: Int) {
+    override fun onBindViewHolder(holder: Companion.BaseViewHolder<CharactersDetailsListItemBinding>, position: Int) {
         with(holder.binding) {
             root.rootView.setOnClickListener {
                 val comicsItem = differ.currentList[position]
@@ -30,6 +29,6 @@ class ComicsRecyclerAdapter(screenWidth: Int) :
         }
     }
 
-    override fun getLayout() = R.layout.comics_list_item
+    override fun getLayout() = R.layout.characters_details_list_item
 
 }

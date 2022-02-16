@@ -46,12 +46,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/hi"
-                            android:textColor="@color/white"
+                            android:textColor="@color/title_color"
                             android:textSize="@dimen/font_14" />
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Marvel's FAN"
+                            android:text="@string/marvel_fan"
                             android:textStyle="bold"
                             android:textColor="@color/primary"
                             android:textSize="@dimen/font_16" />
@@ -74,7 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/marvel_characters"
-                    android:textColor="@color/white"
+                    android:textColor="@color/title_color"
                     android:textSize="@dimen/font_24" />
             </LinearLayout>
 
@@ -109,7 +109,7 @@
                 android:layout_gravity="center"
                 android:id="@+id/networkStateLayout"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="@dimen/dp_96"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.toters.marvelfan.data.model.CharacterModel
 import com.toters.marvelfan.databinding.CharacterListItemBinding
 
-
 class CharactersAdapter:
     PagingDataAdapter<CharacterModel, CharactersAdapter.CharacterViewHolder>(CharacterComparator) {
     var characterClickListener: CharacterClickListener? = null

@@ -95,7 +95,7 @@ class CharactersFragment : BaseFragment<FragmentCharactersBinding, CharactersVie
             errorMsg.text = message
 
             retryButton.setOnClickListener {
-                // TODO: Implement this case
+                characterAdapter.refresh()
             }
         }
     }

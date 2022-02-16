@@ -54,7 +54,7 @@
                         android:layout_gravity="center"
                         android:id="@+id/characterNetworkStateLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_height="@dimen/dp_160"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -96,7 +96,7 @@
                     android:id="@+id/storiesComponent"/>
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="32dp"/>
+                    android:layout_height="@dimen/dp_32"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

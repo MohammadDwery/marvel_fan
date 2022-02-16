@@ -50,13 +50,6 @@ class APIServiceProvider {
         return this
     }
 
-//    private fun OkHttpClient.Builder.setApiKey() = addInterceptor { chain ->
-//        val request = chain.request().newBuilder().
-//            .header("Accept", "application/json")
-//            .addHeader("X-CMC_PRO_API_KEY", BuildConfig.API_KEY)
-//        chain.proceed(request.build())
-//    }
-
     private fun OkHttpClient.Builder.setNetworkInterceptor(context: Context) : OkHttpClient.Builder =
         addInterceptor(NetworkConnectionInterceptor(context))
 

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.ViewCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenStarted
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.toters.marvelfan.R
@@ -14,6 +16,7 @@ import com.toters.marvelfan.databinding.FragmentCharacterDetailBinding
 import com.toters.marvelfan.databinding.ItemNetworkStateBinding
 import com.toters.marvelfan.ui.base.BaseFragment
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CharacterDetailFragment :
@@ -21,10 +24,10 @@ class CharacterDetailFragment :
 
     private val viewModel: CharacterDetailViewModel by viewModel()
     private val args: CharacterDetailFragmentArgs by navArgs()
-    private val comicsAdapter by lazy { ComicsRecyclerAdapter(resources.displayMetrics.widthPixels) }
-    private val seriesAdapter by lazy { ComicsRecyclerAdapter(resources.displayMetrics.widthPixels) }
-    private val eventsAdapter by lazy { ComicsRecyclerAdapter(resources.displayMetrics.widthPixels) }
-    private val storiesAdapter by lazy { ComicsRecyclerAdapter(resources.displayMetrics.widthPixels) }
+    private val comicsAdapter by lazy { AdapterRecyclerAdapter(resources.displayMetrics.widthPixels) }
+    private val seriesAdapter by lazy { AdapterRecyclerAdapter(resources.displayMetrics.widthPixels) }
+    private val eventsAdapter by lazy { AdapterRecyclerAdapter(resources.displayMetrics.widthPixels) }
+    private val storiesAdapter by lazy { AdapterRecyclerAdapter(resources.displayMetrics.widthPixels) }
 
     private val itemDecorator by lazy {
         MarginDecoration(
@@ -101,55 +104,50 @@ class CharacterDetailFragment :
     }
 
     private fun initObservers() {
-        launchOnLifecycleScope {
-            with(viewModel) {
-                characterDetailsDataResFlow.collectLatest {
-                    when(it.status){
-                        DataResourceStatus.LOADING -> bindLoadingCharacterDetails()
-                        DataResourceStatus.SUCCESS -> bindSuccessCharacterDetails(it.data!!)
-                        DataResourceStatus.FAILURE -> {
-                            // TODO: implement the state of failure API's call
-                        }
-                        else -> {}
-                    }
+        with(viewModel) {
+            launchOnLifecycleScope { characterDetailsDataResFlow.collectLatest {
+                when(it.status){
+                    DataResourceStatus.LOADING -> bindLoadingCharacterDetails()
+                    DataResourceStatus.SUCCESS -> bindSuccessCharacterDetails(it.data!!)
+                    else -> {}
                 }
-                comicsDataResFlow.collectLatest {
-                    when(it.status){
-                        DataResourceStatus.LOADING -> bindLoadingState(binding.comicsComponent.networkStateLayout)
-                        DataResourceStatus.SUCCESS -> bindSuccessState(binding.comicsComponent.networkStateLayout, it.data!!, comicsAdapter)
-                        DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.comicsComponent.networkStateLayout, R.string.no_comics_message)
-                        DataResourceStatus.FAILURE -> bindFailureState(binding.comicsComponent.networkStateLayout, it.message!!)
-                        else -> {}
-                    }
+            } }
+            launchOnLifecycleScope { comicsDataResFlow.collectLatest {
+                when(it.status){
+                    DataResourceStatus.LOADING -> bindLoadingState(binding.comicsComponent.networkStateLayout)
+                    DataResourceStatus.SUCCESS -> bindSuccessState(binding.comicsComponent.networkStateLayout, it.data!!, comicsAdapter)
+                    DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.comicsComponent.networkStateLayout, R.string.no_comics_message)
+                    DataResourceStatus.FAILURE -> bindFailureState(binding.comicsComponent.networkStateLayout, it.message!!)
+                    else -> {}
                 }
-                eventsDataResFlow.collectLatest {
-                    when(it.status){
-                        DataResourceStatus.LOADING -> bindLoadingState(binding.eventsComponent.networkStateLayout)
-                        DataResourceStatus.SUCCESS -> bindSuccessState(binding.eventsComponent.networkStateLayout, it.data!!, eventsAdapter)
-                        DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.eventsComponent.networkStateLayout, R.string.no_events_message)
-                        DataResourceStatus.FAILURE -> bindFailureState(binding.eventsComponent.networkStateLayout, it.message!!)
-                        else -> {}
-                    }
+            } }
+            launchOnLifecycleScope { eventsDataResFlow.collectLatest {
+                when(it.status){
+                    DataResourceStatus.LOADING -> bindLoadingState(binding.eventsComponent.networkStateLayout)
+                    DataResourceStatus.SUCCESS -> bindSuccessState(binding.eventsComponent.networkStateLayout, it.data!!, eventsAdapter)
+                    DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.eventsComponent.networkStateLayout, R.string.no_events_message)
+                    DataResourceStatus.FAILURE -> bindFailureState(binding.eventsComponent.networkStateLayout, it.message!!)
+                    else -> {}
                 }
-                seriesDataResFlow.collectLatest {
-                    when(it.status){
-                        DataResourceStatus.LOADING -> bindLoadingState(binding.seriesComponent.networkStateLayout)
-                        DataResourceStatus.SUCCESS -> bindSuccessState(binding.seriesComponent.networkStateLayout, it.data!!, seriesAdapter)
-                        DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.seriesComponent.networkStateLayout, R.string.no_series_message)
-                        DataResourceStatus.FAILURE -> bindFailureState(binding.seriesComponent.networkStateLayout, it.message!!)
-                        else -> {}
-                    }
+            } }
+            launchOnLifecycleScope { seriesDataResFlow.collectLatest {
+                when(it.status){
+                    DataResourceStatus.LOADING -> bindLoadingState(binding.seriesComponent.networkStateLayout)
+                    DataResourceStatus.SUCCESS -> bindSuccessState(binding.seriesComponent.networkStateLayout, it.data!!, seriesAdapter)
+                    DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.seriesComponent.networkStateLayout, R.string.no_series_message)
+                    DataResourceStatus.FAILURE -> bindFailureState(binding.seriesComponent.networkStateLayout, it.message!!)
+                    else -> {}
                 }
-                storiesDataResFlow.collectLatest {
-                    when(it.status){
-                        DataResourceStatus.LOADING -> bindLoadingState(binding.storiesComponent.networkStateLayout)
-                        DataResourceStatus.SUCCESS -> bindSuccessState(binding.storiesComponent.networkStateLayout, it.data!!, storiesAdapter)
-                        DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.storiesComponent.networkStateLayout, R.string.no_stories_message)
-                        DataResourceStatus.FAILURE -> bindFailureState(binding.storiesComponent.networkStateLayout, it.message!!)
-                        else -> {}
-                    }
+            } }
+            launchOnLifecycleScope { storiesDataResFlow.collectLatest {
+                when(it.status){
+                    DataResourceStatus.LOADING -> bindLoadingState(binding.storiesComponent.networkStateLayout)
+                    DataResourceStatus.SUCCESS -> bindSuccessState(binding.storiesComponent.networkStateLayout, it.data!!, storiesAdapter)
+                    DataResourceStatus.NO_RESULTS -> bindNoResultsState(binding.storiesComponent.networkStateLayout, R.string.no_stories_message)
+                    DataResourceStatus.FAILURE -> bindFailureState(binding.storiesComponent.networkStateLayout, it.message!!)
+                    else -> {}
                 }
-            }
+            } }
         }
     }
 
@@ -179,7 +177,7 @@ class CharacterDetailFragment :
         }
     }
 
-    private fun bindSuccessState(networkStateLayout: ItemNetworkStateBinding, items: List<BaseModel>, adapter: ComicsRecyclerAdapter) {
+    private fun bindSuccessState(networkStateLayout: ItemNetworkStateBinding, items: List<BaseModel>, adapter: AdapterRecyclerAdapter) {
         networkStateLayout.root.visibility = View.GONE
         adapter.setList(items)
     }
@@ -196,10 +194,10 @@ class CharacterDetailFragment :
 
     private fun bindFailureState(networkStateLayout: ItemNetworkStateBinding, message: String) {
         with(networkStateLayout) {
-            root.visibility = android.view.View.VISIBLE
-            errorMsg.visibility = android.view.View.VISIBLE
-            retryButton.visibility = android.view.View.VISIBLE
-            progressBar.visibility = android.view.View.GONE
+            root.visibility = View.VISIBLE
+            errorMsg.visibility = View.VISIBLE
+            retryButton.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
             errorMsg.text = message
             retryButton.setOnClickListener {
                 // ToDO: implement retry behavior
