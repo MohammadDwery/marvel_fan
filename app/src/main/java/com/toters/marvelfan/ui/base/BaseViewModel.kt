@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.toters.marvelfan.data.model.ApiException
 import com.toters.marvelfan.data.network.DataResourceState
-import com.toters.marvelfan.utils.NetworkConnectionInterceptor
-import kotlinx.coroutines.CoroutineScope
+import com.toters.marvelfan.data.network.NetworkConnectionInterceptor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch

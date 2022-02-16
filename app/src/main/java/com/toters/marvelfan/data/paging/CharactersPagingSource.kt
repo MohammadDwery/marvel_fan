@@ -2,10 +2,11 @@ package com.toters.marvelfan.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.toters.marvelfan.data.model.ApiException
 import com.toters.marvelfan.data.model.CharacterModel
 import com.toters.marvelfan.data.network.api.CharactersAPIServices
-
-const val CHARACTERS_LIMIT = 25
+import com.toters.marvelfan.utils.AppConstants
+import com.toters.marvelfan.data.network.NetworkConnectionInterceptor.NoConnectionException
 
 class CharactersPagingSource(
     private val service: CharactersAPIServices,
@@ -14,14 +15,14 @@ class CharactersPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterModel> {
         // Start refresh at position 1 if undefined.
         val position = params.key ?: 1
-        val offset = if (params.key != null) ((position - 1) * CHARACTERS_LIMIT) + 1 else 0
+        val offset = if (params.key != null) ((position - 1) * AppConstants.CHARACTERS_LIMIT) + 1 else 0
         return try {
             val characters = service.getCharacters(offset = offset, limit = params.loadSize).data.results
             val nextKey = if (characters.isEmpty()) null
             else {
                 // initial load size = 3 * NETWORK_PAGE_SIZE
                 // ensure we're not requesting duplicating items, at the 2nd request
-                position + (params.loadSize / CHARACTERS_LIMIT)
+                position + (params.loadSize / AppConstants.CHARACTERS_LIMIT)
             }
 
             LoadResult.Page(
@@ -30,6 +31,10 @@ class CharactersPagingSource(
                 // assume that if a full page is not loaded, that means the end of the data
                 nextKey = nextKey
             )
+        } catch (e: ApiException) {
+            LoadResult.Error(e)
+        } catch (e: NoConnectionException) {
+            LoadResult.Error(e)
         } catch (e: Exception) {
             LoadResult.Error(e)
         }

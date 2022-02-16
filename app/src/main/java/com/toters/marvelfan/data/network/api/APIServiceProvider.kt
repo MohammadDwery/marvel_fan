@@ -1,23 +1,19 @@
 package com.toters.marvelfan.data.network.api
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.toters.marvelfan.BuildConfig
 import com.toters.marvelfan.BuildConfig.PRIVATE_API_KEY
 import com.toters.marvelfan.BuildConfig.PUBLIC_API_KEY
 import com.toters.marvelfan.data.model.ApiException
 import com.toters.marvelfan.data.network.resposes.ErrorResponse
-import com.toters.marvelfan.utils.NetworkConnectionInterceptor
+import com.toters.marvelfan.data.network.NetworkConnectionInterceptor
 import com.toters.marvelfan.utils.getMd5Hash
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import okhttp3.ResponseBody
-import retrofit2.Converter
 
 
 class APIServiceProvider {

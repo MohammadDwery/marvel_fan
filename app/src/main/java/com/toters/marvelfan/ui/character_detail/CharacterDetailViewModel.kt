@@ -5,9 +5,7 @@ import com.toters.marvelfan.data.model.*
 import com.toters.marvelfan.data.network.DataResourceState
 import com.toters.marvelfan.data.repository.CharactersRepository
 import com.toters.marvelfan.ui.base.BaseViewModel
-import com.toters.marvelfan.utils.NetworkConnectionInterceptor
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class CharacterDetailViewModel(

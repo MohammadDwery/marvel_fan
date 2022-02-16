@@ -1,4 +1,4 @@
-package com.toters.marvelfan.utils
+package com.toters.marvelfan.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager

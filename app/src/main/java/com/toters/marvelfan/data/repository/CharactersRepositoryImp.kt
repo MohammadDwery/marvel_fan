@@ -4,22 +4,17 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.toters.marvelfan.data.model.*
-import com.toters.marvelfan.data.network.DataResourceState
 import com.toters.marvelfan.data.network.api.CharactersAPIServices
-import com.toters.marvelfan.data.paging.CHARACTERS_LIMIT
 import com.toters.marvelfan.data.paging.CharactersPagingSource
-import com.toters.marvelfan.utils.NetworkConnectionInterceptor
-import kotlinx.coroutines.Dispatchers
+import com.toters.marvelfan.utils.AppConstants
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 
 class CharactersRepositoryImp(
     private val charactersApiServices: CharactersAPIServices
 ): CharactersRepository {
 
     override suspend fun getCharacters(): Flow<PagingData<CharacterModel>> = Pager(
-        config = PagingConfig(pageSize = CHARACTERS_LIMIT, prefetchDistance = 2),
+        config = PagingConfig(pageSize = AppConstants.CHARACTERS_LIMIT, prefetchDistance = 2),
         pagingSourceFactory = { CharactersPagingSource(charactersApiServices) }
     ).flow
 
